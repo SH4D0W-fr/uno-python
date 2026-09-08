@@ -31,7 +31,6 @@ inversion = CartesBonus("inversion", 2, False)
 passer = CartesBonus("passer", 2, False)
 joker = CartesBonus("joker", 4, True)
 plus4 = CartesBonus("plus4", 4, True)
-print(cartes_bonus)
 
 # Tests unitaires
 if __name__ == "__main__":
