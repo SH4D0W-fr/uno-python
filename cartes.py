@@ -1,4 +1,32 @@
 class CarteNombre:
 
-    def __init__(couleur, nombre):
-        
+    def setCartes():
+        cartes = [(0, 0, 0), (0, 1, 0), (0, 2, 0), (0, 3, 0)]
+        for i in range(9):
+            for k in range(4):
+                for id in range(2):
+                    carte = (i+1, k, id+1)
+                    cartes.append(carte)
+        return(cartes)
+
+
+    ## 0 = rouge
+    ## 1 = jaune
+    ## 2 = vert
+    ## 3 = bleu
+
+    def __init__(self, nombre, couleur, identifiant):
+        self.setCartes
+        self.col = couleur #4 couleurs disponible (rouge,  bleu, jaune, vert)
+        self.num = nombre #nombre de 0 à 9
+        self.id = identifiant #identifiant de la carte de 1 à 2
+
+    def getAttributs(self):
+        return(self.num, self.col, self.id)
+
+
+
+if __name__ == "__main__":
+    c1 = CarteNombre("jaune", 4, 1)
+    print(CarteNombre.getAttributs(c1))
+    print(CarteNombre.setCartes())
