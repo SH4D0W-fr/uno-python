@@ -1,4 +1,4 @@
-from defausse import defausse
+#import defausse
 
 def piocher(paquet:list, nombre:int):
     pioche = []
