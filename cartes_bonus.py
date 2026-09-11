@@ -1,9 +1,9 @@
 cartes_bonus = [] # Liste stockant toutes les cartes bonus
 
 class CartesBonus:
-    def creer_ids(self, couleur:list, valeur:str, nombre:int, sansCouleur:bool):
+    def creer_cartes_bonus(self, couleur:list, valeur:str, nombre:int, sansCouleur:bool):
         if not sansCouleur:
-            for i in range(len(couleur) - 1):
+            for i in range(len(couleur)):
                 for k in range(nombre):
                     id_carte = (valeur, couleur[i], str(k+1))
                     cartes_bonus.append(id_carte) # Exemple : "inversionrouge1", "plus2vert2"
@@ -23,7 +23,7 @@ class CartesBonus:
         self.n = nombre
         self.wcol = sansCouleur
         # On créé un ID par carte
-        self.creer_ids(self.col, self.val, self.n, self.wcol)
+        self.creer_cartes_bonus(self.col, self.val, self.n, self.wcol)
 
 ### CREATION DES CARTES BONUS ###
 plus2 = CartesBonus("plus2", 2, False)
@@ -36,5 +36,5 @@ plus4 = CartesBonus("plus4", 4, True)
 if __name__ == "__main__":
     # plus2 = CartesBonus("plus2", 2, False)
     # plus4 = CartesBonus("plus4", 2, True)
-    # print(cartes_bonus)
+    print(len(cartes_bonus))
     pass
