@@ -1,6 +1,7 @@
 ### IMPORT DES ELEMENTS ###
 from cartes_bonus import cartes_bonus
 from cartes import cartes
+from pioche import piocher
 import random
 
 ### VERIF CHARGEMENT CARTES ###
@@ -20,6 +21,12 @@ class Joueur:
 
     def ajouter_cartes(self, carte):
         self.main.append(carte)
+
+    def pioche(self, paquet, nombre):
+        cartes, nouveau_paquet = piocher(paquet, nombre)
+        for i in range(len(cartes)):
+            self.ajouter_cartes(cartes[i])
+        toutes_cartes = nouveau_paquet
 
     def voir_cartes(self):
         return self.main
@@ -41,24 +48,31 @@ def distribuer_cartes(joueurs:list, paquet:list, nb_cartes:int):
         for _ in range(nb_cartes):
             joueur.ajouter_cartes(paquet.pop())
 
-joueurs = ajouter_joueur()
-distribuer_cartes(joueurs, toutes_cartes, 7)
-
-for joueur in joueurs:
-    print(f"{joueur.nom} : {joueur.voir_cartes()}")
-
-
 ### TESTS UNITAIRES ###
-# if __name__ == "__main__":
-    # joueur1 = Joueur("Timéo")
-    # joueur2 = Joueur("Roger")
+if __name__ == "__main__":
+    joueurs = ajouter_joueur()
+    distribuer_cartes(joueurs, toutes_cartes, 7)
 
-    # for i in range(7):
-    #     joueur1.ajouter_cartes(toutes_cartes[0])
-    #     toutes_cartes.pop(0)
+    for joueur in joueurs:
+        print(f"{joueur.nom} : {joueur.voir_cartes()}")
 
-    # for i in range(7):
-    #         joueur2.ajouter_cartes(toutes_cartes[0])
-    #         toutes_cartes.pop(0)
-    # print(joueur1.voir_cartes())
-    # print(joueur2.voir_cartes())
+    ### TEST PIOCHE ###
+    print("Cartes joueurs")
+    joueurs[0].voir_cartes()
+    print("Pioche")
+    print(toutes_cartes)
+
+    joueurs[0].pioche(toutes_cartes, 2)
+    print("Après pioche 1 :")
+    print("Cartes joueurs")
+    print(joueurs[0].voir_cartes())
+    print("Pioche")
+    print(toutes_cartes)
+    
+    joueurs[0].pioche(toutes_cartes, 2)
+    print("Après pioche 2 :")
+    print("Cartes joueurs")
+    print(joueurs[0].voir_cartes())
+    print("Pioche")
+    print(toutes_cartes)
+    
