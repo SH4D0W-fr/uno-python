@@ -2,6 +2,10 @@ import random
 
 pile = []
 
+# Fonction 1 : ajouter une carte dans la défausse
+# Fonction 2 : Récupérer toutes les cartes de la défausse
+# Fonction 3 : Récupérer la dernière carte posée
+
 class Défausse:
 
     def pileDéfausse(self, carte):
