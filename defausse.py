@@ -1,22 +1,39 @@
 import random
 
-pile = []
+pile = [(9, "vert", 1)]
 
-# Fonction 1 : ajouter une carte dans la défausse
-# Fonction 2 : Récupérer toutes les cartes de la défausse
-# Fonction 3 : Récupérer la dernière carte posée
+# Fonction 1 : ajouter une carte dans la défausse              FAIT
+# Fonction 2 : Récupérer toutes les cartes de la défausse      FAIT
+# Fonction 3 : Récupérer la dernière carte posée               FAIT 
 
 class Défausse:
 
-    def pileDéfausse(self, carte):
-        pile.append((0, "rouge", 0))    ### IMPLEMETNER LE VRAI SYSTEME
 
+    def __init__(self, pile, carte):
+        self.défausse =  pile
 
-    def __init__(self):
-        self.défausse = Défausse.pileDéfausse
+    def ajouterDéfausse(self, carte):                       ### ajouter une ou plusieurs cartes
+        self.défausse = self.défausse + carte 
+        return(self.défausse)   
 
-    def mélangerDéfausse(self):
-        return random.shuffle(self.défause)
+    def mélangerDéfausse(self):                             ### mélange de la défausse (on garde ?)
+        return(random.shuffle(self.défausse))          
 
-    def getDéfausse(self):
+    def getDéfausse(self):                                  ### obtenir la défausse en entier
         return self.défausse
+
+    def getLastCard(self):                                  ### obtient la derni-re carte posé pour pouvoir continuer à jouer 
+        return(self.défausse.pop())                         ### quand la pioche est vide
+
+
+if __name__ == "__main__":
+
+    carte = [(0, "vert", 1), (3, "jaune", 1)]
+    poubelle = Défausse(pile, carte) 
+    
+
+    print(poubelle.ajouterDéfausse(carte))
+    print(poubelle.getDéfausse())
+    print(poubelle.getLastCard())
+    print(poubelle.getDéfausse())
+    
