@@ -6,11 +6,11 @@ class CartesBonus:
             for i in range(len(couleur)):
                 for k in range(nombre):
                     id_carte = (valeur, couleur[i], str(k+1))
-                    cartes_bonus.append(id_carte) # Exemple : "inversionrouge1", "plus2vert2"
+                    cartes_bonus.append(id_carte) # Exemple : "("inversion", "rouge", 1)", "("plus2", "vert", 2)"
         else:
             for k in range(nombre):
                 id_carte = (valeur, str(k+1))
-                cartes_bonus.append(id_carte) # Exemple : "plus41", "plus2vert2"
+                cartes_bonus.append(id_carte) # Exemple : "("plus4", 1"), "("plus2", "vert", 2)"
 
     def __init__(self, valeur:str, nombre:int, sansCouleur:bool):
         """
