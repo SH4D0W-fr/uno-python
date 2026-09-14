@@ -174,9 +174,6 @@ Une fenêtre s'ouvre dans le navigateur. Configurez-la ainsi :
 
 Puis cliquez sur **CONVERT .PY TO .EXE**.
 
-> Les fichiers `cartes.py`, `cartes_bonus.py`, `pioche.py` et `defausse.py` sont
-> détectés automatiquement : il n'y a rien à ajouter dans « Additional Files ».
-
 ### 3. Récupérer le fichier
 
 L'exécutable se trouve dans :
@@ -210,16 +207,6 @@ python -c "from PIL import Image; Image.open('logo.png').convert('RGBA').save('l
 
 Le PNG source doit être **carré** et faire **au moins 256x256** px, sinon
 l'icône sera déformée ou floue.
-
-> L'icône n'apparaît que sur le fichier `.exe` dans l'explorateur Windows et dans
-> la barre des tâches ; elle ne change rien à l'affichage du jeu dans le terminal.
->
-> Si l'ancienne icône reste affichée après une nouvelle génération, c'est le cache
-> d'icônes de Windows : renommez le `.exe` ou videz le cache avec
-> `ie4uinit.exe -show`.
-
-> Les dossiers `build/`, `dist/`, `output/` et les fichiers `.spec` sont ignorés
-> par Git : ils n'ont pas à être versionnés.
 
 ---
 

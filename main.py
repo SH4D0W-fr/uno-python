@@ -7,6 +7,11 @@ import random
 import os
 import time
 
+try:
+    import msvcrt          # Windows uniquement : permet de lire une touche sans Entree
+except ImportError:
+    msvcrt = None
+
 ### VERIF CHARGEMENT CARTES ###
 print(str(len(cartes_bonus) + len(cartes))  + " cartes chargées.")
 print(str(len(cartes)) + " cartes nombres")
@@ -135,6 +140,17 @@ def effacer_ecran():
 def pause():
     """Laisse le temps de lire le dernier message avant la suite."""
     time.sleep(DELAI)
+
+def attendre_touche():
+    """Attend une touche avant de fermer le programme.
+    Sans cela, la fenetre de l'executable se fermerait aussitot la partie finie."""
+    print("\nAppuyez sur une touche pour quitter...")
+    if msvcrt is None:                  # Linux / macOS : pas de msvcrt
+        input()
+        return
+    while msvcrt.kbhit():               # on vide les touches tapees pendant la partie
+        msvcrt.getch()
+    msvcrt.getch()
 
 def afficher_main(joueur:Joueur, couleur_active:str, valeur_active):
     print(f"\nMain de {joueur.nom} ({len(joueur.main)} cartes) :")
@@ -313,3 +329,4 @@ def jouer_partie():
 ### LANCEMENT DU JEU ###
 if __name__ == "__main__":
     jouer_partie()
+    attendre_touche()
