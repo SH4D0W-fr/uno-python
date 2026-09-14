@@ -4,6 +4,8 @@ from cartes import cartes
 from pioche import piocher
 from defausse import Defausse
 import random
+import os
+import time
 
 ### VERIF CHARGEMENT CARTES ###
 print(str(len(cartes_bonus) + len(cartes))  + " cartes chargées.")
@@ -23,6 +25,7 @@ BLEU = "\033[94m"
 NEUTRE = "\033[95m"
 RESET = "\033[0m"
 CODES_COULEUR = {"rouge": ROUGE, "jaune": JAUNE, "vert": VERT, "bleu": BLEU}
+DELAI = 2
 
 ### GESTION JOUEUR ###
 class Joueur:
@@ -109,6 +112,7 @@ def recharger_pioche(paquet:list, defausse:Defausse):
     paquet.extend(reste)
     defausse.defausse = [dessus]   # à transformer en méthode viderDéfausse() plus tard
     print("(La défausse a été remélangée dans la pioche.)")
+    pause()
     return True
 
 def piocher_cartes(paquet:list, defausse:Defausse, nombre:int):
@@ -123,6 +127,14 @@ def piocher_cartes(paquet:list, defausse:Defausse, nombre:int):
 
 
 ### AFFICHAGE ET SAISIE ###
+
+def effacer_ecran():
+    """Efface les messages precedents pour ne garder que le tour en cours."""
+    os.system("cls" if os.name == "nt" else "clear")
+
+def pause():
+    """Laisse le temps de lire le dernier message avant la suite."""
+    time.sleep(DELAI)
 
 def afficher_main(joueur:Joueur, couleur_active:str, valeur_active):
     print(f"\nMain de {joueur.nom} ({len(joueur.main)} cartes) :")
@@ -160,9 +172,11 @@ def choisir_carte(joueur:Joueur, paquet:list, defausse:Defausse, couleur_active:
 
     if len(jouables) == 0:
         print(f"{joueur.nom} n'a aucune carte jouable : il pioche.")
+        pause()
         nouvelles = piocher_cartes(paquet, defausse, 1)
         if len(nouvelles) == 0:
             print("Plus aucune carte à piocher, le tour est passé.")
+            pause()
             return None
         carte = nouvelles[0]
         joueur.ajouter_cartes(carte)
@@ -170,6 +184,7 @@ def choisir_carte(joueur:Joueur, paquet:list, defausse:Defausse, couleur_active:
         if est_jouable(carte, couleur_active, valeur_active):
             if input("Voulez-vous la jouer ? (o/n) ").lower() == "o":
                 return joueur.main.pop()
+        pause()
         return None
 
     afficher_main(joueur, couleur_active, valeur_active)
@@ -232,6 +247,7 @@ def jouer_partie():
     joueurs = ajouter_joueur()
     if len(joueurs) < 2:
         print("Il faut au moins 2 joueurs pour jouer.")
+        pause()
         return None
     distribuer_cartes(joueurs, paquet, 7)
     ### PREMIERE CARTE : on cherche une carte nombre pour démarrer simplement ###
@@ -246,9 +262,12 @@ def jouer_partie():
     tour = 0        # index du joueur courant (on commence par le premier joueur ajouté)
     sens = 1        # 1 = sens horaire, -1 = sens inverse
 
+    effacer_ecran()
     print("\n=== DEBUT DE LA PARTIE ===")
+    pause()
 
     while True:
+        effacer_ecran()
         dessus = carte_du_dessus(defausse)
         valeur_active = valeur_de(dessus)
         joueur = joueurs[tour]
@@ -268,6 +287,7 @@ def jouer_partie():
 
         defausse.ajouterDefausse([carte])
         print(f"{joueur.nom} pose : {nom_carte(carte)}")
+        pause()
 
         ### VICTOIRE ###
         if len(joueur.main) == 0:
@@ -276,11 +296,13 @@ def jouer_partie():
 
         if len(joueur.main) == 1:
             print(f"!!! {joueur.nom} annonce UNO !!!") # flm de faire des contre uno
+            pause()
 
         ### EFFET DE LA CARTE ###
         suivant = (tour + sens) % len(joueurs)
         couleur_active, sens, saute = appliquer_effet(
             carte, joueurs, suivant, sens, paquet, defausse, joueur)
+        pause()
 
         ### JOUEUR SUIVANT ###
         tour = (tour + sens) % len(joueurs)
