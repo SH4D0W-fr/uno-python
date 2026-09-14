@@ -2,7 +2,7 @@
 from cartes_bonus import cartes_bonus
 from cartes import cartes
 from pioche import piocher
-from defausse import Défausse
+from defausse import Defausse
 import random
 
 ### VERIF CHARGEMENT CARTES ###
@@ -86,24 +86,24 @@ def est_jouable(carte:tuple, couleur_active:str|None, valeur_active):
 
 ### GESTION DE LA PIOCHE ET DE LA DEFAUSSE ###
 
-def carte_du_dessus(defausse:Défausse):
+def carte_du_dessus(defausse:Defausse):
     """Dernière carte posée"""
-    return defausse.getDéfausse()[-1]
+    return defausse.getDefausse()[-1]
 
-def recharger_pioche(paquet:list, defausse:Défausse):
+def recharger_pioche(paquet:list, defausse:Defausse):
     """Quand la pioche est vide on remet la défausse dedans"""
-    pile = defausse.getDéfausse()
+    pile = defausse.getDefausse()
     if len(pile) <= 1:
         return False
     dessus = pile[-1]
     reste = pile[:-1]
     random.shuffle(reste)
     paquet.extend(reste)
-    defausse.défausse = [dessus]   # à transformer en méthode viderDéfausse() plus tard
+    defausse.defausse = [dessus]   # à transformer en méthode viderDéfausse() plus tard
     print("(La défausse a été remélangée dans la pioche.)")
     return True
 
-def piocher_cartes(paquet:list, defausse:Défausse, nombre:int):
+def piocher_cartes(paquet:list, defausse:Defausse, nombre:int):
     """Pioche (nombre) cartes en rechargeant la pioche si besoin."""
     obtenues = []
     for _ in range(nombre):
@@ -145,7 +145,7 @@ def demander_couleur(joueur:Joueur):
 
 ### DEROULEMENT D'UN TOUR ###
 
-def choisir_carte(joueur:Joueur, paquet:list, defausse:Défausse, couleur_active:str|None, valeur_active):
+def choisir_carte(joueur:Joueur, paquet:list, defausse:Defausse, couleur_active:str|None, valeur_active):
     """Fait jouer un joueur. Renvoie la carte posée, ou None s'il passe."""
     jouables = [i for i, c in enumerate(joueur.main)
                 if est_jouable(c, couleur_active, valeur_active)]
@@ -172,7 +172,7 @@ def choisir_carte(joueur:Joueur, paquet:list, defausse:Défausse, couleur_active
         print("Cette carte n'est pas jouable, choisissez-en une autre.")
 
 def appliquer_effet(carte:tuple, joueurs:list, suivant:int, sens:int,
-                    paquet:list, defausse:Défausse, poseur:Joueur):
+                    paquet:list, defausse:Defausse, poseur:Joueur):
     """Applique l'effet d'une carte action.
     Renvoie (couleur_active, sens, saute) où (saute)s indique si le joueur
     suivant perd son tour."""
@@ -226,14 +226,13 @@ def jouer_partie():
         print("Il faut au moins 2 joueurs pour jouer.")
         return None
     distribuer_cartes(joueurs, paquet, 7)
-
     ### PREMIERE CARTE : on cherche une carte nombre pour démarrer simplement ###
-    defausse = Défausse([], None)
+    defausse = Defausse([], None)
     premiere = paquet.pop(0)
     while not isinstance(valeur_de(premiere), int):
         paquet.append(premiere)
         premiere = paquet.pop(0)
-    defausse.ajouterDéfausse([premiere])
+    defausse.ajouterDefausse([premiere])
 
     couleur_active = couleur_de(premiere)
     tour = 0        # index du joueur courant (on commence par le premier joueur ajouté)
@@ -259,7 +258,7 @@ def jouer_partie():
             tour = (tour + sens) % len(joueurs)
             continue
 
-        defausse.ajouterDéfausse([carte])
+        defausse.ajouterDefausse([carte])
         print(f"{joueur.nom} pose : {nom_carte(carte)}")
 
         ### VICTOIRE ###
