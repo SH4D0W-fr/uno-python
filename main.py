@@ -16,6 +16,14 @@ random.shuffle(toutes_cartes)
 
 COULEURS = ["rouge", "jaune", "vert", "bleu"]
 
+ROUGE = "\033[91m"
+JAUNE = "\033[93m"
+VERT = "\033[92m"
+BLEU = "\033[94m"
+NEUTRE = "\033[95m"
+RESET = "\033[0m"
+CODES_COULEUR = {"rouge": ROUGE, "jaune": JAUNE, "vert": VERT, "bleu": BLEU}
+
 ### GESTION JOUEUR ###
 class Joueur:
     def __init__(self, nom:str):
@@ -61,9 +69,9 @@ def est_sans_couleur(carte:tuple):
     return len(carte) == 2
 
 def couleur_de(carte:tuple):
-    """Couleur de la carte, ou None pour un joker / plus4."""
+    """Couleur de la carte, ou une chaine vide pour un joker / plus4."""
     if est_sans_couleur(carte):
-        return None
+        return ""
     return carte[1]
 
 def valeur_de(carte:tuple):
@@ -73,10 +81,10 @@ def valeur_de(carte:tuple):
 def nom_carte(carte:tuple):
     """Version lisible d'une carte pour l'affichage."""
     if est_sans_couleur(carte):
-        return str(carte[0])
-    return f"{carte[0]} {carte[1]}"
+        return f"{NEUTRE}{carte[0]}{RESET}"
+    return f"{CODES_COULEUR[carte[1]]}{carte[0]} {carte[1]}{RESET}"
 
-def est_jouable(carte:tuple, couleur_active:str|None, valeur_active):
+def est_jouable(carte:tuple, couleur_active:str, valeur_active):
     """Une carte est jouable si elle n'a pas de couleur, ou si elle correspond
     à la couleur active ou à la valeur de la carte du dessus."""
     if est_sans_couleur(carte):
@@ -116,7 +124,7 @@ def piocher_cartes(paquet:list, defausse:Defausse, nombre:int):
 
 ### AFFICHAGE ET SAISIE ###
 
-def afficher_main(joueur:Joueur, couleur_active:str|None, valeur_active):
+def afficher_main(joueur:Joueur, couleur_active:str, valeur_active):
     print(f"\nMain de {joueur.nom} ({len(joueur.main)} cartes) :")
     for i, carte in enumerate(joueur.main):
         marque = "*" if est_jouable(carte, couleur_active, valeur_active) else " "
@@ -139,13 +147,13 @@ def demander_entier(message:str, minimum:int, maximum:int):
 def demander_couleur(joueur:Joueur):
     print(f"{joueur.nom}, choisissez une couleur :")
     for i, couleur in enumerate(COULEURS):
-        print(f"  [{i}] {couleur}")
+        print(f"  [{i}] {CODES_COULEUR[couleur]}{couleur}{RESET}")
     return COULEURS[demander_entier("Couleur : ", 0, len(COULEURS) - 1)]
 
 
 ### DEROULEMENT D'UN TOUR ###
 
-def choisir_carte(joueur:Joueur, paquet:list, defausse:Defausse, couleur_active:str|None, valeur_active):
+def choisir_carte(joueur:Joueur, paquet:list, defausse:Defausse, couleur_active:str, valeur_active):
     """Fait jouer un joueur. Renvoie la carte posée, ou None s'il passe."""
     jouables = [i for i, c in enumerate(joueur.main)
                 if est_jouable(c, couleur_active, valeur_active)]
@@ -189,13 +197,13 @@ def appliquer_effet(carte:tuple, joueurs:list, suivant:int, sens:int,
         nouvelle_couleur = demander_couleur(poseur)
         for c in piocher_cartes(paquet, defausse, 4):
             joueurs[suivant].ajouter_cartes(c)
-        print(f"Couleur choisie : {nouvelle_couleur}.")
+        print(f"Couleur choisie : {CODES_COULEUR[nouvelle_couleur]}{nouvelle_couleur}{RESET}.")
         print(f"{joueurs[suivant].nom} pioche 4 cartes et passe son tour.")
         return nouvelle_couleur, sens, True
 
     if valeur == "joker":
         nouvelle_couleur = demander_couleur(poseur)
-        print(f"Couleur choisie : {nouvelle_couleur}.")
+        print(f"Couleur choisie : {CODES_COULEUR[nouvelle_couleur]}{nouvelle_couleur}{RESET}.")
         return nouvelle_couleur, sens, False
 
     if valeur == "passer":
@@ -246,7 +254,7 @@ def jouer_partie():
         joueur = joueurs[tour]
 
         print("\n" + "-" * 40)
-        print(f"Carte du dessus : {nom_carte(dessus)} | Couleur active : {couleur_active}")
+        print(f"Carte du dessus : {nom_carte(dessus)} | Couleur active : {CODES_COULEUR[couleur_active]}{couleur_active}{RESET}")
         print(f"Au tour de {joueur.nom}. Pioche : {len(paquet)} carte(s)")
         for autre in joueurs:
             if autre is not joueur:
