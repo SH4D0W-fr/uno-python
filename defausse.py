@@ -6,34 +6,34 @@ pile = [(9, "vert", 1)]
 # Fonction 2 : Récupérer toutes les cartes de la défausse      FAIT
 # Fonction 3 : Récupérer la dernière carte posée               FAIT 
 
-class Défausse:
+class Defausse:
 
 
     def __init__(self, pile, carte):
-        self.défausse =  pile
+        self.defausse =  pile
 
-    def ajouterDéfausse(self, carte):                       ### ajouter une ou plusieurs cartes
-        self.défausse = self.défausse + carte 
-        return(self.défausse)   
+    def ajouterDefausse(self, carte):                       ### ajouter une ou plusieurs cartes
+        self.defausse = self.defausse + carte 
+        return(self.defausse)   
 
-    def mélangerDéfausse(self):                             ### mélange de la défausse (on garde ?)
-        return(random.shuffle(self.défausse))          
+    def melangerDéfausse(self):                             ### mélange de la défausse (on garde ?)
+        return(random.shuffle(self.defausse))          
 
-    def getDéfausse(self):                                  ### obtenir la défausse en entier
-        return self.défausse
+    def getDefausse(self):                                  ### obtenir la défausse en entier
+        return self.defausse
 
     def getLastCard(self):                                  ### obtient la derni-re carte posé pour pouvoir continuer à jouer 
-        return(self.défausse.pop())                         ### quand la pioche est vide
+        return(self.defausse.pop())                         ### quand la pioche est vide
 
 
 if __name__ == "__main__":
 
     carte = [(0, "vert", 1), (3, "jaune", 1)]
-    poubelle = Défausse(pile, carte) 
+    poubelle = Defausse(pile, carte) 
     
 
-    print(poubelle.ajouterDéfausse(carte))
-    print(poubelle.getDéfausse())
+    print(poubelle.ajouterDefausse(carte))
+    print(poubelle.getDefausse())
     print(poubelle.getLastCard())
-    print(poubelle.getDéfausse())
+    print(poubelle.getDefausse())
     
